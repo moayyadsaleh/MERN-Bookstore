@@ -1,13 +1,18 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import { BsArrow90DegLeft } from "react-icons/bs";
-import React from "react";
 
-const backButton = ({ destination = "/" }) => {
+const BackButton = ({ destination = "/" }) => {
   return (
     <div className="flex">
-      <Link></Link>
+      <Link
+        to={destination}
+        className="bg-sky-800 text-white px-4 py-1 rounded-lg w-fit"
+      >
+        <BsArrow90DegLeft className="text-2xl" />
+      </Link>
     </div>
   );
 };
 
-export default backButton;
+export default BackButton;
