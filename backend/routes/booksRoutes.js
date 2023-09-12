@@ -7,6 +7,7 @@ const router = express.Router();
 //Since the app.use("/books", booksRoute) middleware is use, we don't have to specify the routes
 //Route to save a new book
 
+// Route to save a new book
 router.post("/", async (req, res) => {
   try {
     // Check if required fields are missing in the request body
@@ -16,19 +17,20 @@ router.post("/", async (req, res) => {
       });
     }
 
-    // Create a new book using the 'Book' model, not 'Books'
-    const newBook = {
+    // Create a new book using the 'Book' model
+    const newBook = new Book({
+      // Use 'new Book' to create a new book instance
       title: req.body.title,
       author: req.body.author,
       publishYear: req.body.publishYear,
-    };
+    });
 
-    const book = await Book.create(newBook); // Use 'Book' instead of 'Books'
+    await newBook.save(); // Save the new book to the database
 
     // Send a successful response with the created book data
-    return res.status(201).json(book);
+    return res.status(201).json(newBook); // Return the new book data in the response
   } catch (error) {
-    console.error(error.message); // Use console.error for error messages
+    console.error(error.message);
 
     // Send an error response with a status code of 500 and the error message
     return res.status(500).json({ message: error.message });
