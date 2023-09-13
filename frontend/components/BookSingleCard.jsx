@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { PiBookOpenTextLight } from "react-icons/pi";
-import { BiUserCircle } from "react-icons/bi";
+import { BiUserCircle, BiShow } from "react-icons/bi"; // Added BiShow
 import { AiOutlineEdit } from "react-icons/ai";
 import { BsInfoCircle } from "react-icons/bs";
+import BookModal from "./BookModal";
 
 const BookSingleCard = ({ book }) => {
+  const [showModal, setShowModal] = useState(false);
+
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
+
   return (
     <div
       key={book._id}
@@ -30,10 +37,11 @@ const BookSingleCard = ({ book }) => {
         <Link to={`/books/edit/${book._id}`}>
           <AiOutlineEdit className="text-red-300 text-2xl" />
         </Link>
-        <Link to={`/books/delete/${book._id}`}>
-          <BiUserCircle className="text-red-300 text-2xl" />
-        </Link>
+        <button onClick={toggleModal}>
+          <BiShow className="text-red-300 text-2xl" />
+        </button>
       </div>
+      {showModal && <BookModal book={book} onClose={toggleModal} />}
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import BackButton from "../../components/BackButton";
+import { useSnackbar } from "notistack";
 
 const EditBooks = () => {
   const { id } = useParams(); // Get the book ID from the URL params
@@ -10,6 +11,7 @@ const EditBooks = () => {
   const [publishYear, setPublishYear] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     // Fetch the book data to pre-fill the form for editing
@@ -23,7 +25,6 @@ const EditBooks = () => {
       })
       .catch((error) => {
         console.error(error);
-        alert("An error occurred while fetching book data.");
       });
   }, [id]);
 
@@ -39,11 +40,12 @@ const EditBooks = () => {
       .put(`http://localhost:5555/books/${id}`, data) // Use PUT to update the book
       .then(() => {
         setLoading(false);
+        enqueueSnackbar("Book Edited successfully", { variant: "success" });
         navigate("/");
       })
       .catch((error) => {
         setLoading(false);
-        alert("An error happened. Please check console");
+        enqueueSnackbar("Error", { variant: "error" });
         console.error(error);
       });
   };
